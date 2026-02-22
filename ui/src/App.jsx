@@ -1,15 +1,19 @@
 import { useState, useEffect } from 'react';
 
 function App() {
-  const [forecast, setForecast] = useState([]);
+  const [team, setTeam] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // UPDATE THIS to your new Azure Backend URL
+  // Example: 'https://deera-api-xyz.azurewebsites.net'
+  const BACKEND_URL = 'https://deera-api-xyz-d5dfdsb3dha9cfgu.westindia-01.azurewebsites.net/weatherforecast';
+
   useEffect(() => {
-    // Fetching directly from your live Azure API URL
-    fetch('https://deera-api-xyz-d5dfdsb3dha9cfgu.westindia-01.azurewebsites.net/weatherforecast')
+    // Fetching from your new custom mock data API endpoint
+    fetch(`${BACKEND_URL}/api/team`)
       .then(response => response.json())
       .then(data => {
-        setForecast(data);
+        setTeam(data);
         setLoading(false);
       })
       .catch(error => {
@@ -19,32 +23,37 @@ function App() {
   }, []);
 
   return (
-    <div style={{ padding: '20px', fontFamily: 'sans-serif' }}>
-      <h1>Zenvixor Weather Dashboard</h1>
+    <div style={{ padding: '30px', fontFamily: 'sans-serif', maxWidth: '600px', margin: '0 auto' }}>
+      <h1 style={{ color: '#0078D4', borderBottom: '2px solid #0078D4', paddingBottom: '10px' }}>
+        Zenvixor Studios
+      </h1>
+      <h2>Team Directory</h2>
 
       {loading ? (
-        <p>Loading data from the C# backend...</p>
+        <p style={{ color: '#666', fontStyle: 'italic' }}>
+          Loading mock data from the C# backend...
+        </p>
       ) : (
-        <table border="1" cellPadding="10" style={{ borderCollapse: 'collapse', marginTop: '20px' }}>
-          <thead>
-            <tr style={{ backgroundColor: '#f2f2f2' }}>
-              <th>Date</th>
-              <th>Temp (C)</th>
-              <th>Temp (F)</th>
-              <th>Summary</th>
-            </tr>
-          </thead>
-          <tbody>
-            {forecast.map((day, index) => (
-              <tr key={index}>
-                <td>{day.date}</td>
-                <td>{day.temperatureC}</td>
-                <td>{day.temperatureF}</td>
-                <td>{day.summary}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <ul style={{ listStyleType: 'none', padding: 0 }}>
+          {team.map((member) => (
+            <li
+              key={member.id}
+              style={{
+                backgroundColor: '#f9f9f9',
+                margin: '10px 0',
+                padding: '15px',
+                borderRadius: '8px',
+                border: '1px solid #e0e0e0',
+                boxShadow: '0 2px 4px rgba(0,0,0,0.05)'
+              }}
+            >
+              <strong style={{ fontSize: '18px', display: 'block', color: '#333' }}>
+                {member.name}
+              </strong>
+              <span style={{ color: '#555' }}>{member.role}</span>
+            </li>
+          ))}
+        </ul>
       )}
     </div>
   );

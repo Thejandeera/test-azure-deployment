@@ -1,6 +1,6 @@
 var builder = WebApplication.CreateBuilder(args);
 
-// 1. Add CORS so the separate frontend can fetch data
+// 1. Enable CORS for the frontend
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy => 
@@ -16,22 +16,32 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-// 2. Enable CORS
 app.UseCors("AllowAll");
 
+// 2. Original Weather Endpoint
 var summaries = new[] { "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching" };
-
 app.MapGet("/weatherforecast", () =>
 {
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        )).ToArray();
-    return forecast;
+    return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+    (
+        DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
+        Random.Shared.Next(-20, 55),
+        summaries[Random.Shared.Next(summaries.Length)]
+    )).ToArray();
+});
+
+// 3. NEW Mock Data Endpoint (Zenvixor Team)
+app.MapGet("/api/team", () =>
+{
+    var teamMembers = new[]
+    {
+        new { Id = 1, Name = "Deera", Role = "Co-Founder & Lead Developer" },
+        new { Id = 2, Name = "Alex", Role = "UI/UX Designer" },
+        new { Id = 3, Name = "Sam", Role = "Project Manager" },
+        new { Id = 4, Name = "Jordan", Role = "DevOps Engineer" }
+    };
+    
+    return teamMembers;
 });
 
 app.Run();
