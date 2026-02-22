@@ -4,63 +4,57 @@ on:
     push:
         branches: ["main"]
 
-permissions:
-    contents: read
-    packages: write
-
 jobs:
     build-and-deploy-api:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
 
-            - name: Log in to GitHub Container Registry
+            - name: Log in to Docker Hub
               uses: docker/login-action@v3
               with:
-                  registry: ghcr.io
-                  username: ${{ github.actor }}
-                  password: ${{ secrets.GITHUB_TOKEN }}
+                  username: ${{ secrets.DOCKERHUB_USERNAME }}
+                  password: ${{ secrets.DOCKERHUB_TOKEN }}
 
             - name: Build and push API image
               uses: docker/build-push-action@v5
               with:
                   context: ./Api
                   push: true
-                  # CHANGED: Manually lowercased your repository path
-                  tags: ghcr.io/thejandeera/test-azure-deployment/deera-api:latest
+                  # Tags the image with your Docker Hub username
+                  tags: ${{ secrets.DOCKERHUB_USERNAME }}/deera-api:latest
 
             - name: Deploy API to Azure
               uses: azure/webapps-deploy@v2
               with:
-                  app-name: "deera-api-xyz" # Make sure this matches your Azure portal exactly
+                  app-name: "deera-api-xyz" # UPDATE to your exact backend App Service name
                   publish-profile: ${{ secrets.AZURE_API_PUBLISH_PROFILE }}
-                  # CHANGED: Manually lowercased your repository path
-                  images: "ghcr.io/thejandeera/test-azure-deployment/deera-api:latest"
+                  # Tells Azure to pull the image from Docker Hub
+                  images: "${{ secrets.DOCKERHUB_USERNAME }}/deera-api:latest"
 
     build-and-deploy-ui:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
 
-            - name: Log in to GitHub Container Registry
+            - name: Log in to Docker Hub
               uses: docker/login-action@v3
               with:
-                  registry: ghcr.io
-                  username: ${{ github.actor }}
-                  password: ${{ secrets.GITHUB_TOKEN }}
+                  username: ${{ secrets.DOCKERHUB_USERNAME }}
+                  password: ${{ secrets.DOCKERHUB_TOKEN }}
 
             - name: Build and push UI image
               uses: docker/build-push-action@v5
               with:
                   context: ./ui
                   push: true
-                  # CHANGED: Manually lowercased your repository path
-                  tags: ghcr.io/thejandeera/test-azure-deployment/deera-ui:latest
+                  # Tags the image with your Docker Hub username
+                  tags: ${{ secrets.DOCKERHUB_USERNAME }}/deera-ui:latest
 
             - name: Deploy UI to Azure
               uses: azure/webapps-deploy@v2
               with:
-                  app-name: "deera-ui-xyz" # Make sure this matches your Azure portal exactly
+                  app-name: "deera-ui-xyz" # UPDATE to your exact frontend App Service name
                   publish-profile: ${{ secrets.AZURE_UI_PUBLISH_PROFILE }}
-                  # CHANGED: Manually lowercased your repository path
-                  images: "ghcr.io/thejandeera/test-azure-deployment/deera-ui:latest"
+                  # Tells Azure to pull the image from Docker Hub
+                  images: "${{ secrets.DOCKERHUB_USERNAME }}/deera-ui:latest"
