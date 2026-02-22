@@ -1,0 +1,9 @@
+C:\Users\Lenovo\Desktop\test\MyFullStackApp\Api\publish\Api.exe
+C:\Users\Lenovo\Desktop\test\MyFullStackApp\Api\publish\appsettings.Development.json
+C:\Users\Lenovo\Desktop\test\MyFullStackApp\Api\publish\appsettings.json
+C:\Users\Lenovo\Desktop\test\MyFullStackApp\Api\publish\Api.dll
+C:\Users\Lenovo\Desktop\test\MyFullStackApp\Api\publish\Api.deps.json
+C:\Users\Lenovo\Desktop\test\MyFullStackApp\Api\publish\Api.runtimeconfig.json
+C:\Users\Lenovo\Desktop\test\MyFullStackApp\Api\publish\Api.pdb
+C:\Users\Lenovo\Desktop\test\MyFullStackApp\Api\publish\Microsoft.AspNetCore.OpenApi.dll
+C:\Users\Lenovo\Desktop\test\MyFullStackApp\Api\publish\Microsoft.OpenApi.dll
