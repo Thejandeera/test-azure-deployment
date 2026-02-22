@@ -1,0 +1,58 @@
+name: Build and Deploy Full Stack
+
+on:
+    push:
+        branches: ["main"]
+
+jobs:
+    build-and-deploy-api:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Log in to GitHub Container Registry
+              uses: docker/login-action@v3
+              with:
+                  registry: ghcr.io
+                  username: ${{ github.actor }}
+                  password: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Build and push API image
+              uses: docker/build-push-action@v5
+              with:
+                  context: ./Api # UPDATE THIS if your C# folder is named differently
+                  push: true
+                  tags: ghcr.io/${{ github.repository }}/deera-api:latest
+
+            - name: Deploy API to Azure
+              uses: azure/webapps-deploy@v2
+              with:
+                  app-name: "deera-api-xyz" # UPDATE THIS to your exact backend App Service name
+                  publish-profile: ${{ secrets.AZURE_API_PUBLISH_PROFILE }}
+                  images: "ghcr.io/${{ github.repository }}/deera-api:latest"
+
+    build-and-deploy-ui:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Log in to GitHub Container Registry
+              uses: docker/login-action@v3
+              with:
+                  registry: ghcr.io
+                  username: ${{ github.actor }}
+                  password: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Build and push UI image
+              uses: docker/build-push-action@v5
+              with:
+                  context: ./ui # UPDATE THIS if your React folder is named differently
+                  push: true
+                  tags: ghcr.io/${{ github.repository }}/deera-ui:latest
+
+            - name: Deploy UI to Azure
+              uses: azure/webapps-deploy@v2
+              with:
+                  app-name: "deera-ui-xyz" # UPDATE THIS to your exact frontend App Service name
+                  publish-profile: ${{ secrets.AZURE_UI_PUBLISH_PROFILE }}
+                  images: "ghcr.io/${{ github.repository }}/deera-ui:latest"
