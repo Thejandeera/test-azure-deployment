@@ -20,16 +20,18 @@ jobs:
             - name: Build and push API image
               uses: docker/build-push-action@v5
               with:
-                  context: ./Api # UPDATE THIS if your C# folder is named differently
+                  context: ./Api
                   push: true
-                  tags: ghcr.io/${{ github.repository }}/deera-api:latest
+                  # CHANGED: Manually lowercased your repository path
+                  tags: ghcr.io/thejandeera/test-azure-deployment/deera-api:latest
 
             - name: Deploy API to Azure
               uses: azure/webapps-deploy@v2
               with:
-                  app-name: "deera-api-xyz" # UPDATE THIS to your exact backend App Service name
+                  app-name: "deera-api-xyz" # Make sure this matches your Azure portal exactly
                   publish-profile: ${{ secrets.AZURE_API_PUBLISH_PROFILE }}
-                  images: "ghcr.io/${{ github.repository }}/deera-api:latest"
+                  # CHANGED: Manually lowercased your repository path
+                  images: "ghcr.io/thejandeera/test-azure-deployment/deera-api:latest"
 
     build-and-deploy-ui:
         runs-on: ubuntu-latest
@@ -46,13 +48,15 @@ jobs:
             - name: Build and push UI image
               uses: docker/build-push-action@v5
               with:
-                  context: ./ui # UPDATE THIS if your React folder is named differently
+                  context: ./ui
                   push: true
-                  tags: ghcr.io/${{ github.repository }}/deera-ui:latest
+                  # CHANGED: Manually lowercased your repository path
+                  tags: ghcr.io/thejandeera/test-azure-deployment/deera-ui:latest
 
             - name: Deploy UI to Azure
               uses: azure/webapps-deploy@v2
               with:
-                  app-name: "deera-ui-xyz" # UPDATE THIS to your exact frontend App Service name
+                  app-name: "deera-ui-xyz" # Make sure this matches your Azure portal exactly
                   publish-profile: ${{ secrets.AZURE_UI_PUBLISH_PROFILE }}
-                  images: "ghcr.io/${{ github.repository }}/deera-ui:latest"
+                  # CHANGED: Manually lowercased your repository path
+                  images: "ghcr.io/thejandeera/test-azure-deployment/deera-ui:latest"
