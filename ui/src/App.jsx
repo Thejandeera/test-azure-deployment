@@ -25,7 +25,7 @@ function App() {
   return (
     <div style={{ padding: '30px', fontFamily: 'sans-serif', maxWidth: '600px', margin: '0 auto' }}>
       <h1 style={{ color: '#0078D4', borderBottom: '2px solid #0078D4', paddingBottom: '10px' }}>
-        Zenvixor Studios
+        Mage nama Thejan
       </h1>
       <h2>Team Directory</h2>
 
