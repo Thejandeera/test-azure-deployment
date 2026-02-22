@@ -6,7 +6,7 @@ function App() {
 
   // UPDATE THIS to your new Azure Backend URL
   // Example: 'https://deera-api-xyz.azurewebsites.net'
-  const BACKEND_URL = 'https://deera-api-xyz-d5dfdsb3dha9cfgu.westindia-01.azurewebsites.net/weatherforecast';
+  const BACKEND_URL = 'https://deera-api-xyz-d5dfdsb3dha9cfgu.westindia-01.azurewebsites.net';
 
   useEffect(() => {
     // Fetching from your new custom mock data API endpoint
